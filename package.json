@@ -4,6 +4,7 @@
   "description": "A test server to try to make API calls to Tableau API",
   "main": "app.js",
   "scripts": {
+    "start": "PORT=8080 node app.js",
     "test": "PORT=8000 nodemon app.js"
   },
   "repository": {
