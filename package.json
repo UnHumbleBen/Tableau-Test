@@ -1,0 +1,23 @@
+{
+  "name": "test-server",
+  "version": "1.0.0",
+  "description": "A test server to try to make API calls to Tableau API",
+  "main": "app.js",
+  "scripts": {
+    "test": "PORT=8000 nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "keywords": [
+    "server"
+  ],
+  "author": "Benjamin Lee",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "helmet": "^3.21.2"
+  }
+}
