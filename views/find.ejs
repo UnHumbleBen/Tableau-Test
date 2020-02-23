@@ -10,6 +10,12 @@
       <input type="submit" value="submit">
     </form> 
   </div>
+
+  <% if (typeof alert !== 'undefined' && alert) { %> 
+  <script>
+    alert('Could not find start or destination! Please try again!');
+  </script>
+  <% } %>
   
 </body>
 </html>
