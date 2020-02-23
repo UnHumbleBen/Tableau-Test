@@ -59,6 +59,7 @@
         //   {lat: -27.467, lng: 153.027}
         // ];
         var flightPlanCoordinates = <%- JSON.stringify(path) %>;
+        console.log(JSON.stringify(flightPlanCoordinates));
         var flightPath = new google.maps.Polyline({
           path: flightPlanCoordinates,
           geodesic: true,

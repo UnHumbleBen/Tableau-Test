@@ -37,12 +37,19 @@ app.post('/find', (req, res) => {
 });
 
 app.get('/show', (req, res) => {
-  flightPlanCoordinates = [
-    { lat: 37.772, lng: -122.214 },
-    { lat: 21.291, lng: -157.821 },
-    { lat: -18.142, lng: 178.431 },
-    { lat: -27.467, lng: 153.027 }
-  ];
+  const path = req.query.path;
+  let flightPlanCoordinates;
+  if (req.query.path) {
+    flightPlanCoordinates = JSON.parse(req.query.path);
+  } else {
+    // fallback
+    flightPlanCoordinates = [
+      { lat: 37.772, lng: -122.214 },
+      { lat: 21.291, lng: -157.821 },
+      { lat: -18.142, lng: 178.431 },
+      { lat: -27.467, lng: 153.027 }
+    ];
+  }
   res.render('show', { path: flightPlanCoordinates });
 });
 
