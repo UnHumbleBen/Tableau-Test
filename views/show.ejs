@@ -39,7 +39,6 @@
   src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyC3ABfQlr8Nj-T8xLSLcWePhYzA982e87k
     &origin=Munich&destination=London&mode=flying" allowfullscreen>
 </iframe> -->
-
       <script>
 
       // This example creates a 2-pixel-wide red polyline showing the path of
@@ -53,12 +52,13 @@
           mapTypeId: 'terrain'
         });
 
-        var flightPlanCoordinates = [
-          {lat: 37.772, lng: -122.214},
-          {lat: 21.291, lng: -157.821},
-          {lat: -18.142, lng: 178.431},
-          {lat: -27.467, lng: 153.027}
-        ];
+        // var flightPlanCoordinates = [
+        //   {lat: 37.772, lng: -122.214},
+        //   {lat: 21.291, lng: -157.821},
+        //   {lat: -18.142, lng: 178.431},
+        //   {lat: -27.467, lng: 153.027}
+        // ];
+        var flightPlanCoordinates = <%- JSON.stringify(path) %>;
         var flightPath = new google.maps.Polyline({
           path: flightPlanCoordinates,
           geodesic: true,
