@@ -6,22 +6,78 @@
   <title>Tableau Test</title>
   <script src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
   <script src="assets/js/tableau-2.min.js"></script>
+      <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
 </head>
 <body>
   <h1>Tableau Test</h1>
   <div id="vizContainer"></div>
+      <div id="map"></div>
+
+
+  <!-- GOOGLE MAPS EMBED DOES NOT ALLOW MULTIPLE FLIGHTS -->
+  <!-- <iframe
+  width="600"
+  height="450"
+  frameborder="0" style="border:0"
+  src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyC3ABfQlr8Nj-T8xLSLcWePhYzA982e87k
+    &origin=Sacramento&destination=Munich&mode=flying" allowfullscreen>
 
   <iframe
   width="600"
   height="450"
   frameborder="0" style="border:0"
   src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyC3ABfQlr8Nj-T8xLSLcWePhYzA982e87k
-    &origin=Sacramento&destination=London&mode=flying" allowfullscreen>
-</iframe>
+    &origin=Munich&destination=London&mode=flying" allowfullscreen>
+</iframe> -->
 
   <script src="assets/js/index.js"></script>
   <script>
     initViz();
   </script>
+      <script>
+
+      // This example creates a 2-pixel-wide red polyline showing the path of
+      // the first trans-Pacific flight between Oakland, CA, and Brisbane,
+      // Australia which was made by Charles Kingsford Smith.
+
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 3,
+          center: {lat: 0, lng: -180},
+          mapTypeId: 'terrain'
+        });
+
+        var flightPlanCoordinates = [
+          {lat: 37.772, lng: -122.214},
+          {lat: 21.291, lng: -157.821},
+          {lat: -18.142, lng: 178.431},
+          {lat: -27.467, lng: 153.027}
+        ];
+        var flightPath = new google.maps.Polyline({
+          path: flightPlanCoordinates,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+
+        flightPath.setMap(map);
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3ABfQlr8Nj-T8xLSLcWePhYzA982e87k&callback=initMap">
+    </script>
 </body>
 </html>
