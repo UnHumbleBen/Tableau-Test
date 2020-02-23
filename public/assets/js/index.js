@@ -1,5 +1,6 @@
 function initViz() {
   var containerDiv = document.getElementById("vizContainer");
+  var containerDiv2 = document.getElementById("vizContainer2");
   // url = "https://public.tableau.com/views/WorldIndicators/GDPpercapita?:embed=yes";
   // url = "https://public.tableau.com/views/WorldIndicators/GDPpercapita";
   // url = 'http://public.tableau.com/views/RegionalSampleWorkbook/Storms';
@@ -14,4 +15,7 @@ function initViz() {
   url = "https://public.tableau.com/views/CasesbyProvince/Dashboard1?:display_count=y&:origin=viz_share_link";
   // url = "https://public.tableau.com/views/CasesbyProvince2_0/Dashboard1?:display_count=y&:origin=viz_share_link";
   var viz = new tableau.Viz(containerDiv, url);
+
+  url2 = "https://public.tableau.com/views/CasesbyProvince2_0/Sheet52?:display_count=y&publish=yes&:origin=viz_share_link";
+  var viz2 = new tableau.Viz(containerDiv2, url2);
 }
