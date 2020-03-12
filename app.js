@@ -99,6 +99,10 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
+app.get('/viz', (req, res) => {
+  res.render('viz');
+});
+
 app.get('/find', (req, res) => {
   console.log('mapProvinceToCoord = ', mapProvinceToCoord);
   res.render('find', { mapProvinceToCoord });

@@ -1,34 +1,18 @@
 <%- include('./partials/header') %>
   <title>Viral Watch</title>
-  <script src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
-  <script src="assets/js/tableau-2.min.js"></script>
 </head>
 <body>
-  <h1>Viral Watch</h1>
-  <div id="vizContainer" style="height: 2000px"></div>
-  <div id="vizContainer2" style="height: 1000px"></div>
-  <a href="/find">Find a Safe Route!</a>
-
-
-  <!-- GOOGLE MAPS EMBED DOES NOT ALLOW MULTIPLE FLIGHTS -->
-  <!-- <iframe
-  width="600"
-  height="450"
-  frameborder="0" style="border:0"
-  src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyC3ABfQlr8Nj-T8xLSLcWePhYzA982e87k
-    &origin=Sacramento&destination=Munich&mode=flying" allowfullscreen>
-
-  <iframe
-  width="600"
-  height="450"
-  frameborder="0" style="border:0"
-  src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyC3ABfQlr8Nj-T8xLSLcWePhYzA982e87k
-    &origin=Munich&destination=London&mode=flying" allowfullscreen>
-</iframe> -->
-
-  <script src="assets/js/index.js"></script>
-  <script>
-    initViz();
-  </script>
+  <%- include('./partials/navbar') %>
+  <div class="jumbotron">
+    <div>
+      <h1 class="display-4">Welcome to Viral Watch!</h1>
+      <p class="lead">A interactive tool to monitor, predict, and plan for the outbreak of the Coronavirus.</p>
+      <p class="lead">
+        <a class="btn btn-secondary btn-lg" href="/viz" role="button">See Visualizations</a>
+        <a class="btn btn-primary btn-lg" href="/find" role="button">Plan a Route</a>
+        <a class="btn btn-success btn-lg" href="https://devpost.com/software/viral-protector" role="button">Learn more</a>
+      </p>
+    </div>
+  </div>
 </body>
 </html>
