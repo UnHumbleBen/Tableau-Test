@@ -5,50 +5,47 @@
   <%- include('./partials/navbar') %>
   <h1>Plan Your Trip</h1>
   <div class="container">
-    <form action="/find" method="post" display="inline-block">
-    <label for="start">Start:</label>
-      <select name="start" id="start">
+    <form id="form" action="/find" method="post" display="inline-block">
+      <label for="start">Start:</label>
+      <select name="dest[0]" id="start">
           <option value="">--Please choose an option--</option>
-      <% Object.keys(mapProvinceToCoord).forEach(function(key) { %>
-          <option value="<%= JSON.stringify(mapProvinceToCoord[key]) %>"><%= key %></option>
-      <% }) %>
+          <% Object.keys(mapProvinceToCoord).forEach(function(key) { %>
+              <option value="<%= JSON.stringify(mapProvinceToCoord[key]) %>"><%= key %></option>
+          <% }) %>
       </select>
 
-    <label for="waypointA">Waypoint A:</label>
-      <select name="waypointA" id="waypointA">
+      <label for="dest1">Destination 1:</label>
+      <select name="dest[1]" id="dest1">
           <option value="">--Please choose an option--</option>
-      <% Object.keys(mapProvinceToCoord).forEach(function(key) { %>
-          <option value="<%= JSON.stringify(mapProvinceToCoord[key]) %>"><%= key %></option>
-      <% }) %>
+          <% Object.keys(mapProvinceToCoord).forEach(function(key) { %>
+              <option value="<%= JSON.stringify(mapProvinceToCoord[key]) %>"><%= key %></option>
+          <% }) %>
       </select>
 
-    <label for="waypointB">Waypoint B:</label>
-      <select name="waypointB" id="waypointB">
+      <label id="destination-label" for="destination">Final Destination:</label>
+      <select name="dest[2]" id="destination-select">
           <option value="">--Please choose an option--</option>
-      <% Object.keys(mapProvinceToCoord).forEach(function(key) { %>
-          <option value="<%= JSON.stringify(mapProvinceToCoord[key]) %>"><%= key %></option>
-      <% }) %>
+          <% Object.keys(mapProvinceToCoord).forEach(function(key) { %>
+              <option value="<%= JSON.stringify(mapProvinceToCoord[key]) %>"><%= key %></option>
+          <% }) %>
       </select>
 
-    <label for="destination">Destination:</label>
-      <select name="destination" id="destination">
-          <option value="">--Please choose an option--</option>
-      <% Object.keys(mapProvinceToCoord).forEach(function(key) { %>
-          <option value="<%= JSON.stringify(mapProvinceToCoord[key]) %>"><%= key %></option>
-      <% }) %>
-      </select>
-
-      <!-- <input type="text" name="start" id="start" placeholder="Start">
-      <input type="text" name="waypointA" id="waypointA" placeholder="Waypoint A">
-      <input type="text" name="waypointB" id="waypointA" placeholder="Waypoint B">
-      <input type="text" name="destination" id="destination" placeholder="Destination"> -->
+      <button id="add-destination-button" type="button" class="btn btn-info">Add Destination</button>
+      <button id="remove-destination-button" type="button" class="btn btn-danger">Remove Destination</button>
       <input type="submit" value="submit">
     </form> 
   </div>
 
+  <script>
+    // Makes mapProvinceToCoord availaible to find.js.
+    var mapProvinceToCoord = <%- JSON.stringify(mapProvinceToCoord) %>;
+  </script>
+
+  <script src="assets/js/find.js"></script>
+
   <% if (typeof alert !== 'undefined' && alert) { %> 
   <script>
-    alert('Could not find start or destination! Please try again!');
+    alert('Something went wrong! Did you forget to input a destination? Please try again!');
   </script>
   <% } %>
   
