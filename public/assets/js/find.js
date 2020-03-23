@@ -5,11 +5,8 @@ var locationOptionsHTML;
 // Counter variable for number of destinations.
 var numberOfDestinations;
 
-// HTML Elements.
-var destinationSelect;  // used to update final destination's location in array
-var destinationLabel;  // used to append the newly added destination
-var addDestinationButton;
-var removeDestinationButton;
+const EARLIEST_DATE = '2019-12-31';
+
 
 /**
  * Initializes `locationOptionsHTML`, a HTML string containing all of the location
@@ -33,11 +30,17 @@ function getLocationOptions() {
  */
 function newDestinationSelect(destNum) {
   return `
-    <label id="dest${destNum}-label" for="dest${destNum}">Destination ${destNum}:</label>
-    <select name="dest[${destNum}]" id="dest${destNum}">
-      <option value="">--Please choose an option--</option>
-      ${locationOptionsHTML}
-    </select>
+      <div class="destination-form-group" id="dest${destNum}">
+        <h4>Destination ${destNum}:</h4>
+
+        <select name="dest[${destNum}][position]" id="dest${destNum}-select">
+            <option value="">--Please choose an option--</option>
+            ${locationOptionsHTML}
+        </select>
+
+        <label for="start">Date arriving:</label>
+        <input type="date" id="dest${destNum}-date" name="dest[${destNum}][date]" min="${EARLIEST_DATE}" value="">
+      </div>
   `
 }
 
@@ -45,33 +48,39 @@ function newDestinationSelect(destNum) {
  * Event handler for add destination button. 
  */
 function addDestination() {
-  destinationLabel.outerHTML = `${newDestinationSelect(numberOfDestinations)}\n${destinationLabel.outerHTML}`;
-  destinationLabel = document.getElementById('destination-label');
+  const destinationDiv = document.getElementById(`dest${numberOfDestinations}`);
+
+  // For saving value when elements are redrawn.
+  const selectedIndex = document.getElementById(`dest${numberOfDestinations}-select`).selectedIndex;
+  const selectedDate = document.getElementById(`dest${numberOfDestinations}-date`).value;
 
   numberOfDestinations += 1;
-  destinationSelect.name = `dest[${numberOfDestinations}]`;
+  destinationDiv.outerHTML += newDestinationSelect(numberOfDestinations);
+
+  document.getElementById(`dest${numberOfDestinations - 1}-select`).selectedIndex = selectedIndex;
+  document.getElementById(`dest${numberOfDestinations - 1}-date`).value = selectedDate;
 }
 
 /**
  * Event handler for remove destination button. 
  */
 function removeDestination() {
-  if (numberOfDestinations == 2) {
-    alert('Must have at least two destinations.');
+  if (numberOfDestinations == 1) {
+    alert('Must have at least one destinations.');
   } else {
-    const deleteNode = document.getElementById(`dest${numberOfDestinations - 1}`).remove();
+    document.getElementById(`dest${numberOfDestinations}`).remove();
     numberOfDestinations -= 1;
-    document.getElementById(`dest${numberOfDestinations}-label`).remove();
   }
 }
 
 function main() {
   locationOptionsHTML = getLocationOptions();
-  numberOfDestinations = 2;
-  destinationSelect = document.getElementById('destination-select');
-  destinationLabel = document.getElementById('destination-label');
-  addDestinationButton = document.getElementById('add-destination-button');
-  removeDestinationButton = document.getElementById('remove-destination-button');
+  numberOfDestinations = 1;
+  // destinationSelect = document.getElementById('destination-select');
+
+  // Subscribe listeners
+  const addDestinationButton = document.getElementById('add-destination-button');
+  const removeDestinationButton = document.getElementById('remove-destination-button');
   addDestinationButton.onclick = (_) => addDestination();
   removeDestinationButton.onclick = (_) => removeDestination();
 }

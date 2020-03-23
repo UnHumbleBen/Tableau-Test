@@ -20,13 +20,17 @@
   <div id="map"></div>
       <script>
       function initMap() {
+        var dest = <%- JSON.stringify(dest) %>;
+        console.log('dest', JSON.stringify(dest));
+
+        var path = dest.map((obj) => obj.position);
+        console.log('path', JSON.stringify(path));
+
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 3,
-          center: {lat: 0, lng: -180},
+          center: path[0],
           mapTypeId: 'terrain'
         });
-        var flightPlanCoordinates = <%- JSON.stringify(path) %>;
-        console.log(JSON.stringify(flightPlanCoordinates));
 
         var lineSymbol = {
           path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
@@ -34,7 +38,7 @@
         };
 
         var flightPath = new google.maps.Polyline({
-          path: flightPlanCoordinates,
+          path: path,
           icons: [{
             icon: lineSymbol,
             offset: '100%'
@@ -47,16 +51,40 @@
         flightPath.setMap(map);
         animateCircle(flightPath);
 
-        flightPlanCoordinates.forEach(function (latLng, index) {
+        dest.forEach(function (obj, index) {
+          const { position, date, formatted_address, confirmed, death, risk_level } = obj;
+
           let title = (index === 0) ? 'Start' : `Destination ${index}`;
-          
-          title = (index === flightPlanCoordinates.length - 1) ? 'Final Destination' : title;
 
           var marker = new google.maps.Marker({
-            position: latLng,
+            position: position,
             map: map,
             title: title,
           });
+
+          var contentString = `
+            <div class="infowindow">
+              <h3>${formatted_address}</h3> 
+              <p>on ${date}</p>
+              <p>has a risk level of <strong>${risk_level.toFixed(2)}%</strong></p>
+              <p>Confirmed Cases: <strong>${confirmed}</strong></p>
+              <p>Death: <strong>${death}</strong></p>
+              <p><strong>Numbers are made up! (for now)</strong></p>
+            </div>
+          `;
+
+          const infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
+
+          console.log(marker);
+
+          marker.addListener('click', () => {
+            console.log('click');
+            infowindow.open(map, marker);
+          });
+
+          console.log(marker.onclick);
         });
 
         // Use the DOM setInterval() function to change the offset of the symbol
@@ -70,6 +98,8 @@
             icons[0].offset = (count / 4) + '%';
             line.set('icons', icons);
         }, 20);
+
+
       }
     }
     </script>

@@ -6,29 +6,34 @@
   <h1>Plan Your Trip</h1>
   <div class="container">
     <form id="form" action="/find" method="post" display="inline-block">
-      <label for="start">Start:</label>
-      <select name="dest[0]" id="start">
-          <option value="">--Please choose an option--</option>
-          <% Object.keys(mapProvinceToCoord).forEach(function(key) { %>
-              <option value="<%= JSON.stringify(mapProvinceToCoord[key]) %>"><%= key %></option>
-          <% }) %>
-      </select>
 
-      <label for="dest1">Destination 1:</label>
-      <select name="dest[1]" id="dest1">
-          <option value="">--Please choose an option--</option>
-          <% Object.keys(mapProvinceToCoord).forEach(function(key) { %>
-              <option value="<%= JSON.stringify(mapProvinceToCoord[key]) %>"><%= key %></option>
-          <% }) %>
-      </select>
+      <div class="destination-form-group">
+        <h4>Start:</h4>
+        <select name="dest[0][position]" id="start">
+            <option value="">--Please choose an option--</option>
+            <% Object.keys(mapProvinceToCoord).forEach(function(key) { %>
+                <option value="<%= JSON.stringify(mapProvinceToCoord[key]) %>"><%= key %></option>
+            <% }) %>
+        </select>
 
-      <label id="destination-label" for="destination">Final Destination:</label>
-      <select name="dest[2]" id="destination-select">
-          <option value="">--Please choose an option--</option>
-          <% Object.keys(mapProvinceToCoord).forEach(function(key) { %>
-              <option value="<%= JSON.stringify(mapProvinceToCoord[key]) %>"><%= key %></option>
-          <% }) %>
-      </select>
+        <label for="start">Date departing:</label>
+        <input type="date" id="dest0-date" name="dest[0][date]" min="2019-12-31">
+      </div>
+
+
+      <div class="destination-form-group" id="dest1">
+        <h4>Destination 1:</h4>
+
+        <select name="dest[1][position]" id="dest1-select">
+            <option value="">--Please choose an option--</option>
+            <% Object.keys(mapProvinceToCoord).forEach(function(key) { %>
+                <option value="<%= JSON.stringify(mapProvinceToCoord[key]) %>"><%= key %></option>
+            <% }) %>
+        </select>
+
+        <label for="start">Date arriving:</label>
+        <input type="date" id="dest1-date" name="dest[1][date]" min="2019-12-31">
+      </div>
 
       <button id="add-destination-button" type="button" class="btn btn-info">Add Destination</button>
       <button id="remove-destination-button" type="button" class="btn btn-danger">Remove Destination</button>

@@ -3,10 +3,6 @@ const bodyParser = require('body-parser');
 const fetch = require("node-fetch");
 const mongoose = require('mongoose');
 
-
-
-// const helmet = require('helmet');
-
 const app = express();
 
 app.use(express.static(__dirname + '/public'));
@@ -57,20 +53,39 @@ app.get('/find', (req, res) => {
   res.render('find', { mapProvinceToCoord });
 });
 
-function replaceStringsWithNumbersArray(arr) {
-  return arr.map((map) => replaceStringsWithNumbers(map));
-}
-
-function replaceStringsWithNumbers(map) {
-  let newMap = map;
-  // for (key in Object.keys(map)) {
-  //   console.log(key);
-  //   newMap[key] = parseFloat(map[key]);
-  // }
-  Object.keys(map).forEach((key) => {
-    newMap[key] = parseFloat(map[key]);
+/**
+ * Mocks a API call to a database to lookup COVID-19 statistics.
+ * @param {{position: {lat: number, lng: number}, date: string}[]} dest An
+ * array of destination objects given by `position` and `date`.
+ * @returns {Promise<{position: {lat: number, lng: number}, date: string, risk_level: number confirmed: number, death: number}[]>}
+ * A promise which resolves into an array of destination objects
+ * with newly added fields from the database.
+ */
+function mockFetchCovid19Statistics(dest) {
+  let promises = []
+  dest.forEach(destination => {
+    const { lat, lng } = destination.position;
+    const uri = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&result_type=administrative_area_level_1&key=AIzaSyC3ABfQlr8Nj-T8xLSLcWePhYzA982e87k`;
+    const promise = fetch(uri)
+      .then(res => res.json())
+      .then(json => json.results[0].formatted_address);
+    promises.push(promise);
   });
-  return newMap;
+  return Promise.all(promises).then((formatted_addresses => {
+    for (let i = 0; i < dest.length; i += 1) {
+      const destination = dest[i];
+      const formatted_address = formatted_addresses[i];
+      const risk_level = Math.random() * 100;
+      const confirmed = Math.round(Math.random() * 100000);
+      const death = Math.round(Math.random() * 1000);
+
+      destination.risk_level = risk_level;
+      destination.formatted_address = formatted_address;
+      destination.confirmed = confirmed;
+      destination.death = death;
+    }
+    return dest;
+  }));
 }
 
 app.post('/find', (req, res) => {
@@ -78,36 +93,41 @@ app.post('/find', (req, res) => {
     let { dest } = req.body;
     console.log('dest', dest);
 
-    dest = dest.map(destString => JSON.parse(destString));
+    // Parse every destination's position string into a LatLng object.
+    dest.forEach(map => {
+      map.position = JSON.parse(map.position);
+    });
+    console.log('parse dest', dest);
 
-    console.log(dest);
+    dest.forEach(destination => {
+      position = destination.position;
+      position.lat = parseFloat(position.lat);
+      position.lng = parseFloat(position.lng);
+    });
 
-    res.redirect(`/show?path=${JSON.stringify(dest)}`);
-    console.log('API CALL:', `/show?path=${JSON.stringify(dest)}`);
+    mockFetchCovid19Statistics(dest).then((dest) => {
+      console.log('after promise\n', dest);
+      res.redirect(`/show?dest=${JSON.stringify(dest)}`);
+      console.log('API CALL:', `/show?dest=${JSON.stringify(dest)}`);
+    });
   } catch (error) {
+    console.log(error);
     res.render('find', { mapProvinceToCoord, alert: true });
   }
 });
 
 app.get('/show', (req, res) => {
   try {
-    // const path = req.query.path;
-    let flightPlanCoordinates;
-    // console.log('path:', path);
-    flightPlanCoordinates = JSON.parse(req.query.path);
-    flightPlanCoordinates = replaceStringsWithNumbersArray(flightPlanCoordinates);
-    res.render('show', { path: flightPlanCoordinates });
+    let dest = req.query.dest;
+    console.log('dest:', dest);
+
+    dest = JSON.parse(dest);
+    console.log('parsed dest:', dest);
+
+    res.render('show', { dest });
   } catch (error) {
     res.render('find', { mapProvinceToCoord, alert: true });
   }
-  // if (req.query.path) {
-  //   flightPlanCoordinates = JSON.parse(req.query.path);
-  //   flightPlanCoordinates = replaceStringsWithNumbersArray(flightPlanCoordinates);
-  //   res.render('show', { path: flightPlanCoordinates });
-  // } else {
-  //   // fallback
-  //   res.render('find', { alert: true });
-  // }
 });
 
 app.listen(process.env.PORT, process.env.IP, () => {

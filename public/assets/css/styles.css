@@ -7,10 +7,22 @@ html, body {
   padding: 0;
   font-family: 'Roboto', sans-serif;
   text-align: center;
+  background-color: #343a34;
+  color: #fff;
 }
 
 /* Style inputs */
-  input[type=text], select {
+select {
+  width: 50%;
+  padding: 2px 0;
+  margin: 2px 2px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.destination-form-group {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -58,4 +70,18 @@ input[type=submit]:hover {
   .jumbotron div p {
       display: grid;
   }
+}
+
+/* Show page */
+.infowindow, 
+.gm-style .gm-style-iw-c ,
+.gm-style .gm-style-iw-d::-webkit-scrollbar-track, .gm-style .gm-style-iw-d::-webkit-scrollbar-track-piece {
+  background-color: #343a34;
+  color: #fff;
+}
+
+.gm-ui-hover-effect img {
+  color: #fff;
+  -webkit-filter: invert(1);
+  filter: invert(1);
 }
